@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { addDoc, collection } from "firebase/firestore";
-import { SignUpValidation } from "../utilities/signUpValidation";
 import { SignUpData } from "../dto/SignUp";
 import { db } from "../firebase";
+import { ngoSignUpValidation } from "../utilities/ngoValidation";
 
-export class AuthController {
+export class NGOController {
   public static async signUp(req: Request, res: Response, next: NextFunction) {
     try {
-      const { error, value } = SignUpValidation.validate(<SignUpData>req.body);
+      const { error, value } = ngoSignUpValidation.validate(<SignUpData>req.body);
 
       if (error) {
         return res.status(400).json({ message: error.message });

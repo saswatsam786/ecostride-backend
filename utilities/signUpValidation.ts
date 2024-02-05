@@ -1,20 +1,82 @@
-import * as Joi from "joi";
+/* 
+/user/signup
 
-const SignUpValidation = Joi.object({
-  nameNGO: Joi.string().required(),
-  registrationNumber: Joi.string().required(),
-  verified: Joi.boolean().required(),
-  address: Joi.object({
-    city: Joi.string().required(),
-    state: Joi.string().required(),
-    country: Joi.string().required(),
-    pincode: Joi.number().required(),
-  }).required(),
-  orgCategory: Joi.string().required(),
-  namePOC: Joi.string().required(),
-  phonePOC: Joi.number().required(),
-  association: Joi.string().required(),
-  addharPOC: Joi.number().required(),
-});
+first name
+last name
+phone 
+Gender
+email
+password
+userId
 
-export { SignUpValidation };
+
+/user
+All data - except password
+
+/user/wallet -
+Get - credits
+
+
+/ngo/campaign/create
+name of the campaign
+organiser phone and name
+latitude
+longitude
+plant data
+  - name
+  - plant quantity
+  - CO2 sequestration
+Total CO2 sequestration
+campaign ID
+List of donors - 
+  objects -
+      [{userId,value}]
+Total amount to be raised             
+Total amount donated by user
+completed - false
+Total carbon credits to be gained 
+ngo ID
+
+
+/user/campaign
+List of all campaigns
+
+/user/campaign/:campaign ID
+name of the campaign
+campaign Id
+latitude
+longitude
+Total CO2 sequestration
+Total amount to be raised             
+Total amount donated by user
+completed - false
+Total carbon credits to be gained 
+ngo ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/

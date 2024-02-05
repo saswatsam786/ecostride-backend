@@ -1,1 +1,1 @@
-export * from "./authRoute";
+export * from "./ngoRoute";
