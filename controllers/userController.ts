@@ -63,4 +63,67 @@ export class UserController {
       return res.status(400).json({ message: err });
     }
   }
+
+  public static async getAllCampaigns(req: Request, res: Response) {
+    try {
+      console.log("Hello");
+      const campaignsCollection = collection(db, "campaigns");
+      const querySnapshot = await getDocs(campaignsCollection);
+
+      const campaignsArray: any[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const campaignData = doc.data();
+        const campaignInfo = {
+          documentId: doc.id,
+          campaignName: campaignData.campaignName,
+        };
+
+        campaignsArray.push(campaignInfo);
+      });
+
+      return res.status(200).json({ campaigns: campaignsArray });
+    } catch (err) {
+      console.error("Error retrieving campaigns:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  public static async getCampaign(req: Request, res: Response) {
+    const { campaignId } = req.params;
+
+    try {
+      const campaignDocRef = doc(db, "campaigns", campaignId);
+      const campaignDocSnapshot = await getDoc(campaignDocRef);
+
+      if (!campaignDocSnapshot.exists()) return res.status(404).json({ message: "Campaign not found" });
+
+      const campaignData = campaignDocSnapshot.data();
+
+      // Extract the fields you need from the campaignData
+      const {
+        campaignName,
+        orgName,
+        latitude,
+        longitude,
+        Totalco2Sequestration,
+        collectedAmount,
+        targetAmount /* Add other fields if needed */,
+      } = campaignData;
+
+      return res.status(200).json({
+        campaign: {
+          campaignId: campaignId,
+          campaignName,
+          orgName,
+          latitude,
+          longitude,
+          Totalco2Sequestration,
+          collectedAmount,
+          targetAmount,
+          // Add other fields if needed
+        },
+      });
+    } catch (err) {}
+  }
 }

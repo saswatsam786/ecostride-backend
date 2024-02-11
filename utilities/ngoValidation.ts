@@ -1,7 +1,7 @@
 import * as Joi from "joi";
 
 const ngoSignUpValidation = Joi.object({
-  nameNGO: Joi.string().required(),
+  name: Joi.string().required(),
   registrationNumber: Joi.string().required(),
   verified: Joi.boolean().required(),
   address: Joi.object({
@@ -15,6 +15,29 @@ const ngoSignUpValidation = Joi.object({
   phonePOC: Joi.number().required(),
   association: Joi.string().required(),
   addharPOC: Joi.number().required(),
+  campaigns: Joi.array().items().optional(),
 });
 
-export { ngoSignUpValidation };
+const CampaignValidation = Joi.object({
+  campaignName: Joi.string().required(),
+  orgName: Joi.string().required(),
+  orgPhone: Joi.string()
+    .pattern(/^[0-9]{10}$/)
+    .required(),
+  latitude: Joi.string().required(),
+  longitude: Joi.string().required(),
+  plantdata: Joi.object({
+    name: Joi.string().required(),
+    quantity: Joi.number().integer().min(0).required(),
+    co2Sequestration: Joi.number().integer().min(0).required(),
+  }).required(),
+  Totalco2Sequestration: Joi.number().integer().min(0).required(),
+  donorList: Joi.array().items(Joi.string()), // You can adjust this based on your actual data type for donorList
+  targetAmount: Joi.number().integer().min(0).required(),
+  collectedAmount: Joi.number().integer().min(0).required(),
+  completed: Joi.boolean().required(),
+  CarbonCredits: Joi.number().integer().min(0).required(),
+  ngoId: Joi.string().required(),
+});
+
+export { ngoSignUpValidation, CampaignValidation };
