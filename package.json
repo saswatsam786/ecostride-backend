@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node index.ts",
     "dev": "nodemon index.ts",
