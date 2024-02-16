@@ -16,6 +16,7 @@ const ngoSignUpValidation = Joi.object({
   association: Joi.string().required(),
   addharPOC: Joi.number().required(),
   campaigns: Joi.array().items().optional(),
+  email: Joi.string().email().required(),
 });
 
 const CampaignValidation = Joi.object({

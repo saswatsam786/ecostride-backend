@@ -13,4 +13,5 @@ export interface SignUpData {
   phonePOC: number;
   association: string;
   addharPOC: number;
+  email: string;
 }
