@@ -10,6 +10,9 @@ const startServer = async () => {
   app.use(express.urlencoded({ extended: true }));
   app.use("/ngo", ngoRouter);
   app.use("/user", userRouter);
+  app.use("/test", (req, res) => {
+    res.json("Hello");
+  });
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
