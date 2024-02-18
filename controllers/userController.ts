@@ -108,6 +108,9 @@ export class UserController {
         longitude,
         Totalco2Sequestration,
         collectedAmount,
+        plantdata,
+        CarbonCredits,
+        orgPhone
         targetAmount /* Add other fields if needed */,
       } = campaignData;
 
@@ -121,6 +124,9 @@ export class UserController {
           Totalco2Sequestration,
           collectedAmount,
           targetAmount,
+          plantdata,
+          CarbonCredits,
+          orgPhone
           // Add other fields if needed
         },
       });
