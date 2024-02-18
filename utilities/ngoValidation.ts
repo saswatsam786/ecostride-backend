@@ -41,4 +41,8 @@ const CampaignValidation = Joi.object({
   ngoId: Joi.string().required(),
 });
 
-export { ngoSignUpValidation, CampaignValidation };
+const ngoSignInValidation = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+export { ngoSignUpValidation, CampaignValidation, ngoSignInValidation };
