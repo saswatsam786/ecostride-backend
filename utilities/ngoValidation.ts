@@ -27,11 +27,11 @@ const CampaignValidation = Joi.object({
     .required(),
   latitude: Joi.string().required(),
   longitude: Joi.string().required(),
-  plantdata: Joi.object({
+  plantdata: Joi.array().items(Joi.object({
     name: Joi.string().required(),
     quantity: Joi.number().integer().min(0).required(),
     co2Sequestration: Joi.number().integer().min(0).required(),
-  }).required(),
+  })).required(),
   Totalco2Sequestration: Joi.number().integer().min(0).required(),
   donorList: Joi.array().items(Joi.string()), // You can adjust this based on your actual data type for donorList
   targetAmount: Joi.number().integer().min(0).required(),
