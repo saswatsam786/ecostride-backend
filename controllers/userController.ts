@@ -1,8 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-import { userIdValidation, userSignUpValidation } from "../utilities/userValidation";
-import { UserParam, UserSignUp } from "../dto/User";
-import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { transactionCampaignValidation, userIdValidation, userSignUpValidation } from "../utilities/userValidation";
+import { TransactionCampaignDTO, UserParam, UserSignUp } from "../dto/User";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 export class UserController {
@@ -31,12 +42,13 @@ export class UserController {
         email,
         password: hashedPassword,
         userId,
+        transactions: [],
       })
         .then((response) => {
           return res.status(201).json({ message: "User created successfully", id: response.id });
         })
         .catch((err) => {
-          return res.status(500).json({ message: error });
+          return res.status(500).json({ message: err.message });
         });
     } catch (error) {
       return res.status(500).json({ message: error });
@@ -110,7 +122,7 @@ export class UserController {
         collectedAmount,
         plantdata,
         CarbonCredits,
-        orgPhone
+        orgPhone,
         targetAmount /* Add other fields if needed */,
       } = campaignData;
 
@@ -126,10 +138,58 @@ export class UserController {
           targetAmount,
           plantdata,
           CarbonCredits,
-          orgPhone
+          orgPhone,
           // Add other fields if needed
         },
       });
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error retrieving campaign:", err);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  public static async transactionCampaign(req: Request, res: Response) {
+    const { campaignId } = req.params;
+    const { error, value } = transactionCampaignValidation.validate(<TransactionCampaignDTO>req.body);
+
+    if (error) {
+      return res.status(404).json({ message: error.message });
+    }
+
+    let transactionId = "";
+
+    try {
+      await addDoc(collection(db, "transactions"), {
+        ...value,
+        campaignId: campaignId,
+      })
+        .then(async (response) => {
+          transactionId = response.id;
+
+          const campaignDocRef = doc(db, "campaigns", campaignId);
+          await updateDoc(campaignDocRef, {
+            collectedAmount: increment(value.transactionDetails.amount),
+            transactions: arrayUnion({
+              timeStamp: value.transactionDetails.timeStamp,
+              amount: value.transactionDetails.amount,
+              status: value.transactionDetails.status,
+            }),
+          });
+
+          const userDocRef = doc(db, "users", value.userId);
+          await updateDoc(userDocRef, {
+            transactions: arrayUnion(transactionId),
+          }).catch((err) => {
+            console.log(err, "hello");
+          });
+        })
+        .catch((err) => {
+          return res.status(404).json({ message: err });
+        });
+
+      return res.status(200).json({ message: "Transaction successful", transactionId: transactionId });
+    } catch (err) {
+      return res.status(404).json({ message: err });
+    }
   }
 }

@@ -11,3 +11,15 @@ export interface UserSignUp {
 export interface UserParam {
   id: string;
 }
+
+interface TransactionDetails {
+  timeStamp: string;
+  amount: number;
+  status: string;
+}
+
+export interface TransactionCampaignDTO {
+  transactionDetails: TransactionDetails;
+  userId: string;
+  campaignID: string;
+}

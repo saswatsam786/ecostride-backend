@@ -66,6 +66,7 @@ export class NGOController {
 
     const docId = await addDoc(collection(db, "campaigns"), {
       ...value,
+      transactions: [],
     });
 
     const campaignId = docId.id;

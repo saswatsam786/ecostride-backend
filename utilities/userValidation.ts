@@ -16,4 +16,13 @@ const userIdValidation = Joi.object({
   id: Joi.string().required(),
 });
 
-export { userSignUpValidation, userIdValidation };
+const transactionCampaignValidation = Joi.object({
+  transactionDetails: Joi.object({
+    timeStamp: Joi.string().required(),
+    amount: Joi.number().required(),
+    status: Joi.string().required(),
+  }),
+  userId: Joi.string().required(),
+});
+
+export { userSignUpValidation, userIdValidation, transactionCampaignValidation };

@@ -7,5 +7,6 @@ router.post("/signup", UserController.signUp);
 router.get("/campaigns", UserController.getAllCampaigns);
 router.get("/:id", UserController.getUserData);
 router.get("/campaigns/:campaignId", UserController.getCampaign);
+router.post("/transaction/:campaignId", UserController.transactionCampaign);
 
 export { router as userRouter };
