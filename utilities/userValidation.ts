@@ -13,7 +13,7 @@ const userSignUpValidation = Joi.object({
 });
 
 const userIdValidation = Joi.object({
-  id: Joi.string().required(),
+  email: Joi.string().email().required(),
 });
 
 const transactionCampaignValidation = Joi.object({

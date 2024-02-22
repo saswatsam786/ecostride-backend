@@ -61,11 +61,11 @@ export class UserController {
     if (error) return res.status(400).json({ message: error.message });
 
     try {
-      const userDocRef = await doc(db, "users", value.id);
-      const userDocSnapshot = await getDoc(userDocRef);
+      const userDocRef = await query(collection(db, "users"), where("email", "==", value.email));
+      const userDocSnapshot = await getDocs(userDocRef);
 
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
+      if (userDocSnapshot.size > 0) {
+        const userData = userDocSnapshot.docs[0].data();
         delete userData.password;
         return res.status(200).json({ message: userData });
       } else {
